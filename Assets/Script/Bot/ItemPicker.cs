@@ -1,25 +1,29 @@
 using UnityEngine;
-[RequireComponent(typeof(Movement))]
+[RequireComponent(typeof(Mover))]
 
 public class ItemPicker : MonoBehaviour
 {
     [SerializeField] private Transform _backpackPoint;
 
     private Resource _heldObject;
-    private Movement _movement;
+    private Mover _movement;
 
     private void Start()
     {
-        _movement = GetComponent<Movement>();
+        _movement = GetComponent<Mover>();
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (_heldObject == null && other.TryGetComponent(out Resource resource) && resource.ResourceIndex == _movement.CurrentResource?.ResourceIndex)
+        if (_heldObject == null 
+            && other.TryGetComponent(out Resource resource)
+            && resource.ResourceIndex == _movement.CurrentResource?.ResourceIndex)
         {
             PickupObject(resource);
         }
-        else if (_heldObject != null && other.TryGetComponent(out BaseWarehouse baseWarehouse) && baseWarehouse.CheckResourceIndex(_movement.CurrentResource.ResourceIndex))
+        else if (_heldObject != null 
+            && other.TryGetComponent(out BaseWarehouse baseWarehouse)
+            && baseWarehouse.CheckResourceIndex(_movement.CurrentResource.ResourceIndex))
         {
             DropObject(other.transform);
         }

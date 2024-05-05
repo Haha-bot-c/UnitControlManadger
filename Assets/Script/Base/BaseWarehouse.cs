@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System;
+using System.Linq;
 
 [RequireComponent(typeof(AudioSource))]
 public class BaseWarehouse : MonoBehaviour
@@ -21,7 +22,9 @@ public class BaseWarehouse : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent(out Resource resource) && _collectedResources.Contains(resource) == false && CheckResourceIndex(resource.ResourceIndex))
+        if (other.TryGetComponent(out Resource resource)
+            && _collectedResources.Contains(resource) == false 
+            && CheckResourceIndex(resource.ResourceIndex))
         {
             PlayAudioWhenResourceMoved();
             AddCollectedResource(resource);
@@ -42,23 +45,13 @@ public class BaseWarehouse : MonoBehaviour
 
     public bool CheckResourceIndex(int index)
     {
-        foreach (var resource in _indexResours)
-        {
-            if (resource == index)
-            {
-                return true;
-            }
-        }
-
-        return false;
+        return _indexResours.Any(resource => resource == index);
     }
 
     public void SpendResources(int count)
     {
-        for (int i = 0; i < count && _collectedResources.Count > 0; i++)
+        foreach (var resource in _collectedResources.Take(count))
         {
-            Resource resource = _collectedResources.Dequeue();
-
             if (resource != null)
             {
                 Destroy(resource.gameObject);

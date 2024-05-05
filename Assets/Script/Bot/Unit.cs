@@ -1,6 +1,8 @@
 using UnityEngine.AI;
 using UnityEngine;
 
+
+[RequireComponent(typeof(NavMeshAgent), typeof(ItemPicker))]
 public abstract class Unit : MonoBehaviour
 {
     public Resource CurrentResource { get; private set; }
@@ -23,6 +25,8 @@ public abstract class Unit : MonoBehaviour
 
     private Vector3 _positionResourse;
     private Vector3 _startingPosition;
+
+    
 
     protected virtual void Start()
     {
@@ -61,13 +65,20 @@ public abstract class Unit : MonoBehaviour
     public void InitiateMoveToResource(Resource resource)
     {
         CurrentResource = resource;
-        _positionResourse = resource.transform.position;
+        _positionResourse = resource.transform.position; 
         CurrentState = UnitState.MovingToResource;
     }
+
 
     public void StartColonizing(Vector3 position)
     {
         _positionFlag = position;
         CurrentState = UnitState.Colonizing;
+    }
+
+    public void AssignBase(UnitDispatcher dispatcher)
+    {
+        UnitDispather = dispatcher;
+        PositionBase = UnitDispather.transform.position;
     }
 }

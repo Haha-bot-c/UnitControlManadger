@@ -7,7 +7,7 @@ public class BaseFlagSet : MonoBehaviour
     public bool IsActiv { get; private set; }
 
     [SerializeField] private GameObject _flagPrefab;
-    [SerializeField] private DisplayText _displayText;
+    [SerializeField] private BaseTextInfo _textInfo;
     private GameObject _flagInstance;
     
     public event Action<Vector3> FlagSet;
@@ -17,29 +17,29 @@ public class BaseFlagSet : MonoBehaviour
         if (IsActiv)
         {
             Deactivate();
+            return;
         }
-        else
-        {
-            if (_activeBase != null)
-            {
-                _activeBase.Deactivate();
-            }
 
-            Activate();
-        };
+        if (_activeBase != null)
+        {
+            _activeBase.Deactivate();
+        }
+
+        Activate();
+
     }
 
     private void Activate()
     {
         _activeBase = this;
         IsActiv = true;
-        _displayText.TextShowActive(GetInstanceID().ToString());
+        _textInfo.TextShowActive(GetInstanceID().ToString());
     }
 
     private void Deactivate()
     {
         IsActiv = false;
-        _displayText.TextShowDeactivated(GetInstanceID().ToString());
+        _textInfo.TextShowDeactivated(GetInstanceID().ToString());
     }
 
     private void SpawnFlag(Vector3 position)
@@ -56,7 +56,7 @@ public class BaseFlagSet : MonoBehaviour
 
     public void HandleBaseClick(Vector3 position)
     {
-        _displayText.UpdateClickPositionText(position);
+        _textInfo.UpdateClickPositionText(position);
         SpawnFlag(position);
         FlagSet?.Invoke(position);
     }

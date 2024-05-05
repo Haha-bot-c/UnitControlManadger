@@ -6,7 +6,7 @@ public class TerrainClick : MonoBehaviour
 {
     [SerializeField] private LayerMask occupiedLayer;
     [SerializeField] private float checkRadius = 1f;
-    [SerializeField] private Game _game;
+    [SerializeField] private BaseOperatorFlagSet _game;
 
     private Terrain _terrain;
 
@@ -43,6 +43,7 @@ public class TerrainClick : MonoBehaviour
                 }
             }
         }
+
         return null;
     }
 

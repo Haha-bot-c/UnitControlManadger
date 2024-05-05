@@ -1,13 +1,14 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
+using System.Linq;
 
 public class UnitDispatcher : MonoBehaviour
 {
     private const int MinCountUnits = 1;
-    public List<Movement> AllUnits => _allUnits;
+    public List<Mover> AllUnits => _allUnits;
 
-    [SerializeField] private List<Movement> _allUnits = new List<Movement>();
+    [SerializeField] private List<Mover> _allUnits = new List<Mover>();
     [SerializeField] private BaseWarehouse _baseWarehouse;
 
     private Queue<Resource> _foundResources = new Queue<Resource>();
@@ -22,25 +23,18 @@ public class UnitDispatcher : MonoBehaviour
     {
         while (true)
         {
-            Movement freeUnit = GetFreeUnit();
+            Mover freeUnit = GetFreeUnit();
             SendUnitToResource(freeUnit);
             yield return _waitForSeconds;
         }
     }
 
-    private Movement GetFreeUnit()
+    private Mover GetFreeUnit()
     {
-        foreach (var unit in _allUnits)
-        {
-            if (unit.CurrentResource == null)
-            {
-                return unit;
-            }
-        }
-        return null;
+        return _allUnits.FirstOrDefault(unit => unit.CurrentResource == null);
     }
 
-    private void SendUnitToResource(Movement unit)
+    private void SendUnitToResource(Mover unit)
     {
         if (_foundResources.Count > 0 && unit != null)
         {
@@ -55,22 +49,15 @@ public class UnitDispatcher : MonoBehaviour
         _foundResources.Enqueue(resource);
     }
 
-
-    public Movement GetFreeUnitForColonize()
+    public Mover GetFreeUnitForColonize()
     {
-        foreach (var unit in _allUnits)
-        {
-            if (unit.CurrentResource == null && _allUnits.Count > MinCountUnits)
-            {
-                _allUnits.Remove(unit);
-                return unit;
-            }
-        }
-
-        return null;
+        Mover freeUnit = _allUnits.FirstOrDefault(unit => unit.CurrentResource == null && _allUnits.Count > MinCountUnits);
+        _allUnits.RemoveAll(unit => unit == freeUnit);
+        return freeUnit;
     }
 
-    public void RegisterUnit(Movement unit)
+
+    public void RegisterUnit(Mover unit)
     {
         _allUnits.Add(unit);
     }

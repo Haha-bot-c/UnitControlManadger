@@ -3,8 +3,8 @@ using UnityEngine;
 public class CameraMovement : MonoBehaviour
 {
     private const string ZoomAxisName = "Mouse ScrollWheel";
-    private const float _minZoom = 5f;
-    private const float _maxZoom = 50f;
+    private const float MinZoom = 5f;
+    private const float MaxZoom = 50f;
     private const string MouseXAxisName = "Mouse X";
     private const string MouseYAxisName = "Mouse Y";
     private const int MiddleMouseButton = 2;
@@ -65,7 +65,7 @@ public class CameraMovement : MonoBehaviour
     {
         float zoomAmount = Input.GetAxis(ZoomAxisName) * _zoomSpeed;
         Camera.main.fieldOfView -= zoomAmount;
-        Camera.main.fieldOfView = Mathf.Clamp(Camera.main.fieldOfView, _minZoom, _maxZoom);
+        Camera.main.fieldOfView = Mathf.Clamp(Camera.main.fieldOfView, MinZoom, MaxZoom);
     }
 
     private void HandleRotation()

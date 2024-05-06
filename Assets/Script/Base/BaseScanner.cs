@@ -10,7 +10,7 @@ public class BaseScanner : MonoBehaviour
     [SerializeField] private WaitForSeconds _scanInterval = new WaitForSeconds(2f);
 
     private BaseOperatorFlagSet _baseOperator;
-    private List<Resource> _foundResources = new List<Resource>();
+    private List<Resource> _foundedResources = new List<Resource>();
     private int _resourceIndex;
 
     private void Start()
@@ -41,7 +41,7 @@ public class BaseScanner : MonoBehaviour
 
         foreach (Collider collider in colliders)
         {
-            if (collider.TryGetComponent(out Resource resourceComponent) && _foundResources.Contains(resourceComponent) == false)
+            if (collider.TryGetComponent(out Resource resourceComponent) && _foundedResources.Contains(resourceComponent) == false)
             {
                 AddResourceToBase(resourceComponent, currentBase);
             }
@@ -57,6 +57,6 @@ public class BaseScanner : MonoBehaviour
         _resourceIndex++;
         resourceComponent.AssignResourceIndex(_resourceIndex);
         dispather.AddFoundResource(resourceComponent);
-        _foundResources.Add(resourceComponent);
+        _foundedResources.Add(resourceComponent);
     }
 }

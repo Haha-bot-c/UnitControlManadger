@@ -32,7 +32,7 @@ public class UnitSpawner : MonoBehaviour
     {
         if (count >= UnitSpawnResourceThreshold 
             && _baseColonizationStatus.IsColonizing == false
-            && _unitDispatcher.AllUnits.Count < MaxCountUnit)
+            && _unitDispatcher.GetTotalUnitCount() < MaxCountUnit)
         {
             _baseWarehouse.SpendResources(UnitSpawnResourceThreshold);
             SpawnRandomUnit();

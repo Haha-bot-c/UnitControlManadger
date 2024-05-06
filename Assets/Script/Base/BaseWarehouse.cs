@@ -45,17 +45,14 @@ public class BaseWarehouse : MonoBehaviour
 
     public bool CheckResourceIndex(int index)
     {
-        return _indexResours.Any(resource => resource == index);
+        return _indexResours.Contains(index);
     }
 
     public void SpendResources(int count)
     {
-        foreach (var resource in _collectedResources.Take(count))
+        for (int i = 0; i < count; i++)
         {
-            if (resource != null)
-            {
-                Destroy(resource.gameObject);
-            }
+           Destroy(_collectedResources.Dequeue());
         }
 
         CollectedResourcesChanged?.Invoke(_collectedResources.Count);

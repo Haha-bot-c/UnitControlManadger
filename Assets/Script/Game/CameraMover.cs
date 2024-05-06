@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CameraMovement : MonoBehaviour
+public class CameraMover : MonoBehaviour
 {
     private const string ZoomAxisName = "Mouse ScrollWheel";
     private const float MinZoom = 5f;
@@ -55,12 +55,13 @@ public class CameraMovement : MonoBehaviour
 
     private void ClampCameraPosition(ref Vector3 position)
     {
-        float terrainWidth = _terrain.terrainData.size.x;
-        float terrainLength = _terrain.terrainData.size.z;
-
-        position.x = Mathf.Clamp(position.x, 0, terrainWidth);
-        position.z = Mathf.Clamp(position.z, 0, terrainLength);
+        position = new Vector3(
+            Mathf.Clamp(position.x, 0, _terrain.terrainData.size.x),
+            position.y,
+            Mathf.Clamp(position.z, 0, _terrain.terrainData.size.z)
+        );
     }
+
     private void HandleZoom()
     {
         float zoomAmount = Input.GetAxis(ZoomAxisName) * _zoomSpeed;

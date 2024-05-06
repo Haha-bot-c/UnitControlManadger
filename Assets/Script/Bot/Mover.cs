@@ -4,9 +4,8 @@ using System;
 
 public class Mover : Unit
 {
-    [SerializeField] private UnitDispatcher _basePrefab;
-
     public event Action<Vector3> ColonizingPositionReached;
+
     protected override void MoveTo(Vector3 destination)
     {
         NavMeshAgent.SetDestination(destination);

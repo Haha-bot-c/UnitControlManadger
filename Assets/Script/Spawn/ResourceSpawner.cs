@@ -1,6 +1,6 @@
 using System.Collections;
 using UnityEngine;
-
+using System.Linq;
 public class ResourceSpawner : MonoBehaviour
 {
     private const string DefaultLayer = "Default";
@@ -80,8 +80,9 @@ public class ResourceSpawner : MonoBehaviour
 
     private bool HasOtherCollisions(Vector3 position, float minDistanceFromObjects)
     {
-        Collider[] colliders = Physics.OverlapSphere(position, minDistanceFromObjects, LayerMask.GetMask(DefaultLayer));
+        bool areCollidersPresent = Physics.OverlapSphere(position, minDistanceFromObjects, LayerMask.GetMask(DefaultLayer))
+             .Any();
 
-        return colliders.Length > 0; 
+        return areCollidersPresent;
     }
 }

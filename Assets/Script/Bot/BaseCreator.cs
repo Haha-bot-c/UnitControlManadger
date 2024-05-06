@@ -11,16 +11,15 @@ public class BaseCreator : MonoBehaviour
         _unit.ColonizingPositionReached += OnColonizingPositionReached;  
     }
 
-    private void OnDestroy()
-    {
-        _unit.ColonizingPositionReached -= OnColonizingPositionReached;  
-    }
-
     private void OnColonizingPositionReached(Vector3 position)
     {
         UnitDispatcher dispatcher = Instantiate(_basePrefab, position, Quaternion.identity);
-        TryGetComponent(out Mover unit);
-        dispatcher.RegisterUnit(unit);
-        unit.AssignBase(dispatcher);
+        dispatcher.RegisterUnit(_unit);
+        _unit.AssignBase(dispatcher);
     }
+
+    private void OnDisable()
+    {
+        _unit.ColonizingPositionReached -= OnColonizingPositionReached;  
+    }  
 }

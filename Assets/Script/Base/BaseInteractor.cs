@@ -1,9 +1,9 @@
 using System;
 using UnityEngine;
 
-public class BaseFlagSet : MonoBehaviour
+public class BaseInteractor : MonoBehaviour
 {
-    private static BaseFlagSet _activeBase;
+    private static BaseInteractor _activeBase;
     public bool IsActiv { get; private set; }
 
     [SerializeField] private GameObject _flagPrefab;

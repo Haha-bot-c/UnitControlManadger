@@ -1,7 +1,6 @@
 using UnityEngine.AI;
 using UnityEngine;
 
-
 [RequireComponent(typeof(NavMeshAgent), typeof(ItemPicker))]
 public abstract class Unit : MonoBehaviour
 {

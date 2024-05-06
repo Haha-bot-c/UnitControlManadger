@@ -6,12 +6,11 @@ using System.Linq;
 public class UnitDispatcher : MonoBehaviour
 {
     private const int MinCountUnits = 1;
-    public List<Mover> AllUnits => _allUnits;
 
     [SerializeField] private List<Mover> _allUnits = new List<Mover>();
     [SerializeField] private BaseWarehouse _baseWarehouse;
 
-    private Queue<Resource> _foundResources = new Queue<Resource>();
+    private Queue<Resource> _pendingResources = new Queue<Resource>();
     private WaitForSeconds _waitForSeconds = new WaitForSeconds(2f);
 
     private void Start()
@@ -36,9 +35,9 @@ public class UnitDispatcher : MonoBehaviour
 
     private void SendUnitToResource(Mover unit)
     {
-        if (_foundResources.Count > 0 && unit != null)
+        if (_pendingResources.Count > 0 && unit != null)
         {
-            Resource resource = _foundResources.Dequeue();
+            Resource resource = _pendingResources.Dequeue();
             unit.InitiateMoveToResource(resource);
             _baseWarehouse.AddIndexResirse(resource.ResourceIndex);
         }
@@ -46,7 +45,7 @@ public class UnitDispatcher : MonoBehaviour
 
     public void AddFoundResource(Resource resource)
     {
-        _foundResources.Enqueue(resource);
+        _pendingResources.Enqueue(resource);
     }
 
     public Mover GetFreeUnitForColonize()
@@ -56,9 +55,13 @@ public class UnitDispatcher : MonoBehaviour
         return freeUnit;
     }
 
-
     public void RegisterUnit(Mover unit)
     {
         _allUnits.Add(unit);
+    }
+
+    public int GetTotalUnitCount()
+    {
+        return _allUnits.Count;
     }
 }
